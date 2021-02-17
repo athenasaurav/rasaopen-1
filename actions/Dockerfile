@@ -1,16 +1,15 @@
 # Extend the official Rasa SDK image
-FROM rasa/rasa-sdk:1.10.0
-# Use subdirectory as working directory
-WORKDIR /app
-# Copy any additional custom requirements, if necessary (uncomment next line)
-COPY actions/requirements-actions.txt ./
-# Change back to root user to install dependencies
-USER root
-# Install extra requirements for actions code, if necessary (uncomment next line)
-RUN pip install -r requirements-actions.txt
-# Copy actions folder to working directory
-COPY ./actions /app/actions
-# By best practices, don't run the code with root user
-USER 1001
-EXPOSE 5005
-CMD ["start", "--actions", "actions.actions"]
+#whatever version that suits you
+FROM rasa/rasa-sdk:latest 
+
+#define the working directory of Docker container
+WORKDIR /app 
+#copy the requirements txt file with your dependencies in actions directory
+COPY ./requirements-actions.txt ./ 
+#copy everything in ./actions directory (your custom actions code) to /app/actions in container
+COPY ./ /app/actions
+
+#install dependencies inside Docker container
+USER root 
+RUN pip install -r requirements-actions.txt 
+USER 1001 
